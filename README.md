@@ -1,73 +1,42 @@
-# React + TypeScript + Vite
+# Vite App CI/CD
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ce projet est un projet de test pour expérimenter avec les pipelines CI/CD de GitHub Actions.
 
-Currently, two official plugins are available:
+Il s'agit d'une application React + TypeScript + Vite simple utilisée pour tester les workflows d'intégration continue et de déploiement continu.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies utilisées
 
-## React Compiler
+- **React 18** avec TypeScript
+- **Vite** comme bundler et serveur de développement
+- **Vitest** pour les tests unitaires
+- **ESLint** pour l'analyse statique du code
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Pipeline CI/CD
 
-## Expanding the ESLint configuration
+Le projet utilise GitHub Actions pour automatiser :
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Jobs d'intégration continue
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Installation des dépendances** : `npm install`
+- **Linting** : Vérification de la qualité du code avec ESLint
+- **Tests unitaires** : Exécution des tests avec Vitest
+- **Build** : Construction de l'application pour la production
+- **Analyse de sécurité CodeQL** : Scan automatique du code pour détecter les vulnérabilités
+- **Audit des dépendances** : Vérification des vulnérabilités dans les packages npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Jobs de déploiement
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Déploiement automatique** sur GitHub Pages (ou autre plateforme)
+- **Notifications** en cas de succès ou d'échec
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Jobs de sécurité
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **CodeQL Analysis** : Analyse statique de sécurité par GitHub
+- **Dependency Review** : Vérification des nouvelles dépendances dans les PRs
+- **SARIF Upload** : Upload des résultats d'analyse de sécurité
+- **Security Alerts** : Notifications automatiques en cas de vulnérabilités détectées
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Le pipeline se déclenche automatiquement sur :
+
+- Push sur la branche `main`
+- Pull requests vers `main`
